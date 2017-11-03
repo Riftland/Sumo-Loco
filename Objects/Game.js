@@ -3,35 +3,27 @@ function Game(ctx) {
   this.powers = new Powerups(ctx);
   this.players = [
     new Player (ctx, keyPressed, c1),
-    new Player (ctx, keyPressed, c2),
-    new Player (ctx, keyPressed, c3)
+    new Player (ctx, keyPressed, c2)
+    //new Player (ctx, keyPressed, c3)
   ];
   this.sounds = new Sounds();
-  this.end = 1;
-  this.winner = [];
-  this.players.forEach((values) => {
-    this.winner.push(values);
-  })
+  this.write = new Text(this.players);
 };
 
 Game.prototype.start = function(){
+
   var counter = 0;
   var state = false;
   setInterval(function(){
     this.playerControls(keyPressed, this.players[0], this.players[1], this.players[2]);
     this.board.update(this.players, this.powers, state);
+    this.write.write();
     for(var a = 0; a < this.players.length; a++){
       for(var b = a + 1; b < this.players.length; b++){
         this.isOverlapping(this.players[a], this.players[b]);
       }
       this.removePlayer(this.players[a], this.board);
-      if(this.players[a].lifes == 0 && this.players[a].loser){
-        this.winner.splice(a, 1);
-        this.players[a].loser = false;
-        continue;
-      } else if(this.players[a].lifes == 0){
-        continue;
-      }
+      if(this.players[a].lifes == 0)this.players.splice(a, 1);
       if(state)state = this.catchPower(this.players[a], this.powers, state);
     }
     //When state is true, counter not count
@@ -40,45 +32,35 @@ Game.prototype.start = function(){
       counter = 0;
     }
     if(!state)counter ++;
-    console.log(this.winner)
+
     //Check if someone wins
-    if(this.winner.length == 1 && this.end == 1){
-      this.end = 0;
-      console.log(this.winner.color)
-      this.endGame(this.players, this.winner);
-    }
+    this.endGame(this.players);
   }.bind(this), 1000/24);
 
 };
 
-Game.prototype.playerControls = function(keyPressed, player1, player2, player3) {
+Game.prototype.playerControls = function(keyPressed, player1, player2) {
 
   //Player 1
-  if(player1.lifes > 0){
-    if(keyPressed[87])player1.moveUp();
-    if(keyPressed[83])player1.moveDown();
-    if(keyPressed[68])player1.moveRight();
-    if(keyPressed[65])player1.moveLeft();
-    if(keyPressed[32])player1.dash();
-  }
+  if(keyPressed[87])player1.moveUp();
+  if(keyPressed[83])player1.moveDown();
+  if(keyPressed[68])player1.moveRight();
+  if(keyPressed[65])player1.moveLeft();
+  if(keyPressed[32])player1.dash();
 
   //Player 2
-  if(player2.lifes > 0){
-    if(keyPressed[38])player2.moveUp();
-    if(keyPressed[40])player2.moveDown();
-    if(keyPressed[39])player2.moveRight();
-    if(keyPressed[37])player2.moveLeft();
-    if(keyPressed[96])player2.dash();
-  }
+  if(keyPressed[38])player2.moveUp();
+  if(keyPressed[40])player2.moveDown();
+  if(keyPressed[39])player2.moveRight();
+  if(keyPressed[37])player2.moveLeft();
+  if(keyPressed[96])player2.dash();
 
-  //Player 3
-  if(player3.lifes > 0){
-    if(keyPressed[85])player3.moveUp();
-    if(keyPressed[74])player3.moveDown();
-    if(keyPressed[75])player3.moveRight();
-    if(keyPressed[72])player3.moveLeft();
-    if(keyPressed[76])player3 .dash();
-  }
+  //Player 2
+  //if(keyPressed[85])player2.moveUp();
+  //if(keyPressed[74])player2.moveDown();
+  //if(keyPressed[75])player2.moveRight();
+  //if(keyPressed[72])player2.moveLeft();
+  //if(keyPressed[76])player2.dash();
 
 };
 
@@ -172,46 +154,36 @@ Game.prototype.removePlayer = function(ball, board){
   || ball.y + ball.radius > board.height + 500
   || ball.y + ball.radius < board.y - 500){
 
-    if(ball.bSound > 0){
-      this.sounds.play(0);
-      ball.bSound--;
-    }
+    this.sounds.play(0);
 
     ball.lifes--;
-
     if(ball.lifes > 0){
       ball.x = Math.random() * (1000 - 200) + 200;
       ball.y = Math.random() * (1000 - 200) + 200;
       ball.vx = 0;
       ball.vy = 0;
     }
-
-    console.log(ball.lifes);
   }
 };
 
-Game.prototype.endGame = function(players, winner){
-  if(winner.length == 1){
+Game.prototype.endGame = function(players){
+  if(players.length == 1){
+    var player = players[0];
     var counter = 0;
     var t = setInterval(function(){
       if(counter == 9){
-        winner[0].marcador++;
-        alert(winner[0].color + " winner!\n\n" + "Marcador - Red: " + players[0].marcador + " | Green: " + players[1].marcador + " | Blue: " + players[2].marcador);
+        player.color == "red" ? marcadores[0]++ : marcadores[1]++;
+        alert(player.color + " winner!\n\n" + "Marcador - Red: " + marcadores[0] + " | Green: " + marcadores[1]);
         game.repeat();
       }
       counter ++;
     }, 1000);
-      this.sounds.play(2);
+    this.sounds.play(2);
+    players.splice(0);
   }
 };
 
 Game.prototype.repeat = function(){
   this.players.push(new Player (ctx, keyPressed, c1),
-                    new Player (ctx, keyPressed, c2),
-                    new Player (ctx, keyPressed, c3));
-  this.end = 1;
-  this.winner = [];
-  this.players.forEach((values) => {
-    this.winner.push(values);
-  })
+  new Player (ctx, keyPressed, c2));
 };

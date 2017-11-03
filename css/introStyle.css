@@ -1,14 +1,16 @@
-body{
-  font-family: sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
+body{
+  font-family: 'Permanent Marker', cursive;
   background-image: url("../img/japan.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-div{
+.prim{
   text-align: center;
-  padding-top: 20%
+  align-content: center;
+  margin-top: 350px;
 }
 
 h1{
@@ -19,4 +21,39 @@ h1{
 
 a{
   text-decoration: none
+}
+
+ul{
+  list-style: none;
+}
+
+#PJ1, #PJ2{
+  width: 500px;
+  height: 500px;
+}
+
+#PJ2{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#PJ1{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.pj1{
+  font-size: 25px;
+  position: absolute;
+  bottom: 120px;
+  left: 150px;
+}
+
+.pj2{
+  font-size: 25px;
+  position: absolute;
+  bottom: 120px;
+  right: 150px;
 }
