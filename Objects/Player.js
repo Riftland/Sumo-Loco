@@ -10,6 +10,9 @@ function Player(ctx, keysPressed, color){
   this.lifes = 3;
   this.color = color;
   this.speed = 0.5;
+  this.bSound = 3;
+  this.marcador = 0;
+  this.loser = true;
 }
 
 Player.prototype.draw = function(){
