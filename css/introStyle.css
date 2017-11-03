@@ -1,0 +1,22 @@
+body{
+  font-family: sans-serif;
+
+  background-image: url("../img/japan.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+div{
+  text-align: center;
+  padding-top: 20%
+}
+
+h1{
+  margin: 0 auto;
+  font-size: 200px;
+  color: black;
+}
+
+a{
+  text-decoration: none
+}
