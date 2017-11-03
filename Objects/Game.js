@@ -53,7 +53,7 @@ Game.prototype.playerControls = function(keyPressed, player1, player2) {
   if(keyPressed[40])player2.moveDown();
   if(keyPressed[39])player2.moveRight();
   if(keyPressed[37])player2.moveLeft();
-  if(keyPressed[96])player2.dash();
+  if(keyPressed[96] || keyPressed[48])player2.dash();
 
   //Player 2
   //if(keyPressed[85])player2.moveUp();
